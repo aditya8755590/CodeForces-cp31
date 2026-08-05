@@ -40,40 +40,6 @@ class SegmentTree {
     return node;
   }
 
-  public void display() {
-    display(this.root);
-  }
-
-  private void display(Node node) {
-    String str = "";
-
-    if(node.left != null) {
-      str = str + "Interval=[" + node.left.startInterval + "-" + node.left.endInterval + "] and data: " + node.left.data + " => "; 
-    } else {
-      str = str + "No left child";
-    }
-
-    // for current node
-    str = str + "Interval=[" + node.startInterval + "-" + node.endInterval + "] and data: " + node.data + " <= "; 
-    
-    if(node.right != null) {
-      str = str + "Interval=[" + node.right.startInterval + "-" + node.right.endInterval + "] and data: " + node.right.data; 
-    } else {
-      str = str + "No right child";
-    }
-
-    System.out.println(str + '\n');
-
-    // call recursion
-    if(node.left != null) {
-      display(node.left);
-    }
-
-    if(node.right != null) {
-      display(node.right);
-    }
-  }
-
   // query
   public int query(int qsi, int qei) {
     return this.query(this.root, qsi, qei);
@@ -83,10 +49,12 @@ class SegmentTree {
     if(node.startInterval >= qsi && node.endInterval <= qei) {
       // node is completely lying inside query
       return node.data;
-    } else if (node.startInterval > qei || node.endInterval < qsi) {
+    }
+     else if (node.startInterval > qei || node.endInterval < qsi) {
       // completely outside
       return 0;
-    } else {
+    }
+     else {
       return this.query(node.left, qsi, qei) + this.query(node.right, qsi, qei);
     }
   }
@@ -114,7 +82,6 @@ class SegmentTree {
   public static void main(String[] args) {
     int[] arr = {1, 3, 5, 7, 9, 11};
     SegmentTree segmentTree = new SegmentTree(arr);
-    segmentTree.display();
 
     // System.out.println("Query (1, 3): " + segmentTree.query(1, 3));
     // System.out.println("Query (0, 5): " + segmentTree.query(0, 5));
