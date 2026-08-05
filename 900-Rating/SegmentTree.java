@@ -12,8 +12,8 @@ class SegmentTree {
       this.endInterval = endInterval;
     }
   }
-
   Node root;
+  Node lazyRoot;
 
   public SegmentTree(int[] arr) {
     // create a tree using this array
@@ -30,12 +30,9 @@ class SegmentTree {
 
     // create new node with index you are at
     Node node = new Node(start, end);
-    
     int mid = (start + end) / 2;
-
     node.left = this.constructTree(arr, start, mid);
     node.right =this.constructTree(arr, mid + 1, end);
-
     node.data = node.left.data + node.right.data;
     return node;
   }
@@ -61,16 +58,18 @@ class SegmentTree {
 
   // update
   public void update(int index, int value) {
-
     this.root.data = update(this.root, index, value);
+    // this.lazyRoot.data=
   }
-  private int update(Node node, int index, int value) {
 
+  private int update(Node node, int index, int value) {
     if (index >= node.startInterval&& index <= node.endInterval){
+      
       if(index == node.startInterval && index == node.endInterval) {
         node.data = value;
         return node.data;
-      } else {
+      } 
+      else {
         int leftAns = update(node.left, index, value);
         int rightAns = update(node.right, index, value);
         node.data = leftAns + rightAns;
@@ -79,16 +78,14 @@ class SegmentTree {
     }
     return node.data;
   }
+
   public static void main(String[] args) {
     int[] arr = {1, 3, 5, 7, 9, 11};
     SegmentTree segmentTree = new SegmentTree(arr);
+     System.out.println("Query (1, 3): " + segmentTree.query(1, 3));
+     
+     System.out.println("Query (0, 5): " + segmentTree.query(0, 5));
 
-    // System.out.println("Query (1, 3): " + segmentTree.query(1, 3));
-    // System.out.println("Query (0, 5): " + segmentTree.query(0, 5));
-
-    // segmentTree.update(1, 10);
-    // System.out.println("After update:");
-
-    // segmentTree.display();
+     segmentTree.update(1, 10);
   }
 }
